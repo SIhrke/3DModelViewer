@@ -1,14 +1,19 @@
 #pragma once
+#include <string>
+#include <functional>
+class GLFWwindow;
 
 namespace gl 
 {
 	class Window 
 	{
 	public:
-		Window(unsigned width, unsigned height);
+		Window(const std::string& title, unsigned width, unsigned height);
 		~Window();
 		void Activate();
+		void Run(const std::function<void()>& renderFunction);
 	private:
 		static bool glLoaded;
+		GLFWwindow* window=nullptr;
 	};
 }

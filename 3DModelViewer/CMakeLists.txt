@@ -4,7 +4,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
-add_executable (3DModelViewer "3DModelViewer.cpp" "3DModelViewer.h")
+add_executable (3DModelViewer "main.cpp" )
 
-target_link_libraries(3DModelViewer glfw glad)
+target_link_libraries(3DModelViewer glSupportLib)
 # TODO: Add tests and install targets if needed.

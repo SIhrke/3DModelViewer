@@ -4,8 +4,10 @@
 cmake_minimum_required (VERSION 3.8)
 
 project ("3DModelViewer")
-add_subdirectory(External/glad_generated)
 
+add_subdirectory("GLSupportLib")
+add_subdirectory(External/glad_generated)
 add_subdirectory(External/glfw)
+
 # Include sub-projects.
 add_subdirectory ("3DModelViewer")

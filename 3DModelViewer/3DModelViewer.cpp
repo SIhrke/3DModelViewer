@@ -7,7 +7,9 @@ using namespace std;
 
 int main()
 {
-	if (!glfwInit())
+
+	
+	if (!glfwInit()||!gladLoadGL())
 		return -1;
 
 

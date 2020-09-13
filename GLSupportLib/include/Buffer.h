@@ -24,7 +24,8 @@ namespace gl
 	{
 	public:
 		Buffer(BufferData&& data, AccessFrequency frequency, AccessType type);
-		void Activate();
+		void Activate() const;
+		unsigned ElementSizeInBytes() const;
 	private:
 		unsigned buffer;
 		BufferData data;

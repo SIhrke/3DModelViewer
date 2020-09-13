@@ -72,9 +72,12 @@ namespace gl
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(VecType)*data.size(), data.data(), GenerateGLEnum(frequency,type));
 	}
+	unsigned Buffer::ElementSizeInBytes() const
+	{
+		return sizeof(VecType);
+	}
 
-
-	void Buffer::Activate() 
+	void Buffer::Activate() const
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	}

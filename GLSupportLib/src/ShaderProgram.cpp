@@ -1,5 +1,6 @@
 #include "ShaderProgram.h"
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace gl 
 {
@@ -28,6 +29,28 @@ namespace gl
 		glDeleteShader(fragmentShader);
 		glDeleteProgram(shaderProgram);
 	}
+
+	void ShaderProgram::UseBufferForVertexAttribute(const Buffer& buffer, const std::string& variableName) 
+	{
+		Activate();
+		buffer.Activate();
+		auto varLocation = glGetAttribLocation(shaderProgram, variableName.c_str());
+
+		glEnableVertexAttribArray(varLocation);
+
+		//TODO: reflection must be handled here
+		glVertexAttribPointer(varLocation, 3, GL_FLOAT, GL_FALSE,
+			buffer.ElementSizeInBytes(), (void*)0);
+
+	}
+
+	void ShaderProgram::UseForUniform(const glm::mat4x4& mat, const std::string& variableName)
+	{
+		Activate();
+		auto varLocation = glGetUniformLocation(shaderProgram, variableName.c_str());
+		glUniformMatrix4fv(varLocation, 1, GL_FALSE, glm::value_ptr(mat));
+	}
+
 
 
 	void ShaderProgram::Activate() 

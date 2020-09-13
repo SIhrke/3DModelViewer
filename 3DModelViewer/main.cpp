@@ -1,8 +1,8 @@
 ﻿#include "Initializer.h"
 #include "Window.h"
 #include "ShaderProgram.h"
-
 #include "glm/glm.hpp"
+#include <iostream>
 
 static const char* vertex_shader_text =
 "#version 110\n"
@@ -27,10 +27,17 @@ static const char* fragment_shader_text =
 
 int main()
 {
-	gl::Initializer::Initialize();
-	gl::Window window("window", 640, 480);
-	window.Activate();
-	gl::ShaderProgram shader(vertex_shader_text, fragment_shader_text);
-	window.Run([](){});
+	try 
+	{
+		gl::Initializer::Initialize();
+		gl::Window window("window", 640, 480);
+		window.Activate();
+		gl::ShaderProgram shader(vertex_shader_text, fragment_shader_text);
+		window.Run([]() {});
+	}
+	catch (const std::exception& ex)
+	{
+		std::cout << ex.what() << std::endl;
+	}
 	return 0;
 }

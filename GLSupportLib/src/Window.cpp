@@ -1,7 +1,7 @@
 #include "Window.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
+#include <sstream>
 
 namespace gl 
 {
@@ -15,7 +15,9 @@ namespace gl
 			const GLchar* message,
 			const void* userParam)
 	{
-		std::cout<< "OpenGL Error type: "<<type<<" severity: "<< severity<<" message: "<< message<<std::endl;
+		std::stringstream ss;
+		ss<< "OpenGL Error type: " << type << " severity: " << severity << " message: " << message << std::endl;
+		throw std::exception(ss.str().c_str());
 	}
 
 	bool Window::glLoaded = false;

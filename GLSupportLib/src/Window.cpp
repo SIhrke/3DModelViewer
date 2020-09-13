@@ -1,9 +1,23 @@
 #include "Window.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 namespace gl 
 {
+
+	void GLAPIENTRY
+		MessageCallback(GLenum source,
+			GLenum type,
+			GLuint id,
+			GLenum severity,
+			GLsizei length,
+			const GLchar* message,
+			const void* userParam)
+	{
+		std::cout<< "OpenGL Error type: "<<type<<" severity: "<< severity<<" message: "<< message<<std::endl;
+	}
+
 	bool Window::glLoaded = false;
 	Window::Window(const std::string& title, unsigned width, unsigned height):
 		window(glfwCreateWindow(width,height,title.c_str(),nullptr,nullptr))
@@ -27,6 +41,10 @@ namespace gl
 			{
 				throw std::exception("Could not initialize OpenGL. Maybe no Context is Current.");
 			}
+			//enable debug output for opengl
+			glEnable(GL_DEBUG_OUTPUT);
+			glDebugMessageCallback(MessageCallback, 0);
+
 		}
 
 	}

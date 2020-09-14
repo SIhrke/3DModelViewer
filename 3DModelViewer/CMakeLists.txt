@@ -2,8 +2,11 @@
 # project specific logic here.
 #
 cmake_minimum_required (VERSION 3.8)
+configure_file(fragmentShader.frag ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file(vertexShader.vert ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
 # Add source to this project's executable.
 add_executable (3DModelViewer "main.cpp" )
 target_link_libraries(3DModelViewer glSupportLib)
+set_property(TARGET 3DModelViewer PROPERTY CXX_STANDARD 17)
 # TODO: Add tests and install targets if needed.

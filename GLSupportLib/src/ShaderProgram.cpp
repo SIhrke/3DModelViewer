@@ -1,15 +1,33 @@
 #include "ShaderProgram.h"
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <fstream>
 
 namespace gl 
 {
+
+	ShaderProgram::ShaderProgram(const std::filesystem::path& vertexShader, const std::filesystem::path& fragmentShader)
+	{
+		std::ifstream vertexStream(vertexShader.string());
+		std::ifstream fragmentStream(fragmentShader.string());
+
+		std::string vertexText((std::istreambuf_iterator<char>(vertexStream)),std::istreambuf_iterator<char>());
+		std::string fragmentText((std::istreambuf_iterator<char>(fragmentStream)), std::istreambuf_iterator<char>());
+		SetupShaders(vertexText, fragmentText);
+
+	}
+
 	ShaderProgram::ShaderProgram(const std::string& vertexShaderText, const std::string& fragmentShaderText)
 	{
+		SetupShaders(vertexShaderText, fragmentShaderText);
+	}
+
+	void ShaderProgram::SetupShaders(const std::string& vertexShaderText, const std::string& fragmentShaderText)
+	{
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		
-		const char* vertexShaderTextBuffer= vertexShaderText.c_str();
-		glShaderSource(vertexShader, 1, const_cast<const GLchar* const *>(&(vertexShaderTextBuffer)), NULL);
+
+		const char* vertexShaderTextBuffer = vertexShaderText.c_str();
+		glShaderSource(vertexShader, 1, const_cast<const GLchar* const*>(&(vertexShaderTextBuffer)), NULL);
 		glCompileShader(vertexShader);
 		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 

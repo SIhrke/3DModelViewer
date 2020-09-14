@@ -5,23 +5,7 @@
 #include <glm/ext.hpp>
 #include <iostream>
 #include <glad/glad.h>
-
-static const char* vertex_shader_text =
-"#version 110\n"
-"uniform mat4 MVP;\n"
-"attribute vec3 vertex;\n"
-"void main()\n"
-"{\n"
-"    gl_Position = MVP*vec4(vertex, 1.0);\n"
-"}\n";
-
-static const char* fragment_shader_text =
-"#version 110\n"
-"void main()\n"
-"{\n"
-"    gl_FragColor = vec4(1.0,0.0,0.0, 1.0);\n"
-"}\n";
-
+#include <filesystem>
 
 int main()
 {
@@ -39,7 +23,7 @@ int main()
 		gl::Window window("window", width, height);
 		window.Activate();
 		gl::Buffer buffer(std::move(vertices),gl::AccessFrequency::STATIC,gl::AccessType::DRAW);
-		gl::ShaderProgram shader(vertex_shader_text, fragment_shader_text);
+		gl::ShaderProgram shader(std::filesystem::path("vertexShader.vert"), std::filesystem::path("fragmentShader.frag"));
 		shader.UseBufferForVertexAttribute(buffer, "vertex");
 
 		auto eyePosition = glm::vec3(0.0f, 0.0f, 1.0f);

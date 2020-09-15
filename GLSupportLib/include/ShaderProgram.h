@@ -2,6 +2,7 @@
 #include <string>
 #include <filesystem>
 #include "Buffer.h"
+#include "TypeTraits.h"
 
 namespace gl
 {
@@ -11,7 +12,21 @@ namespace gl
 		ShaderProgram(const std::filesystem::path& vertexShader, const std::filesystem::path& fragmentShader);
 		ShaderProgram(const std::string& vertexShader, const std::string& fragmentShader);
 		~ShaderProgram();
-		void UseBufferForVertexAttribute(const Buffer& buffer, const std::string& variableName);
+
+		template<typename VecType>
+		void UseBufferForVertexAttribute(const Buffer<VecType>& buffer, const std::string& variableName)
+		{
+			Activate();
+			buffer.Activate();
+			auto varLocation = glGetAttribLocation(shaderProgram, variableName.c_str());
+			;
+			glEnableVertexAttribArray(varLocation);
+
+			//TODO: reflection must be handled here
+			glVertexAttribPointer(varLocation, OpenGLTraits<VecType>::size, OpenGLTraits<VecType>::glType, GL_FALSE,
+				buffer.ElementSizeInBytes(), (void*)0);
+
+		}		
 		void UseForUniform(const glm::mat4x4& mat, const std::string& variableName);
 		void Activate();
 	private:

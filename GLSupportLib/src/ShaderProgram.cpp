@@ -48,19 +48,7 @@ namespace gl
 		glDeleteProgram(shaderProgram);
 	}
 
-	void ShaderProgram::UseBufferForVertexAttribute(const Buffer& buffer, const std::string& variableName) 
-	{
-		Activate();
-		buffer.Activate();
-		auto varLocation = glGetAttribLocation(shaderProgram, variableName.c_str());
 
-		glEnableVertexAttribArray(varLocation);
-
-		//TODO: reflection must be handled here
-		glVertexAttribPointer(varLocation, 3, GL_FLOAT, GL_FALSE,
-			buffer.ElementSizeInBytes(), (void*)0);
-
-	}
 
 	void ShaderProgram::UseForUniform(const glm::mat4x4& mat, const std::string& variableName)
 	{

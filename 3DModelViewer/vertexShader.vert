@@ -1,7 +1,10 @@
-#version 110
+#version 140
 uniform mat4 MVP;
-attribute vec3 vertex;
+
+in vec3 vertex;
+out vec3 fragNormal;
 void main()
 {
    gl_Position = MVP*vec4(vertex, 1.0);
 }
+

@@ -7,3 +7,6 @@
 [submodule "External/tinygltf"]
 	path = External/tinygltf
 	url = https://github.com/syoyo/tinygltf.git
+[submodule "External/stl_reader"]
+	path = External/stl_reader
+	url = https://github.com/sreiter/stl_reader.git

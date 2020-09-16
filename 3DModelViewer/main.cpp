@@ -6,6 +6,10 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <filesystem>
+#define TINYGLTF_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <tiny_gltf.h>
 
 int main()
 {
@@ -23,8 +27,14 @@ int main()
 			glm::vec3{1,-1,1}
 		};
 
+		
 
 		std::vector<unsigned int> indices{0,1,2 ,0,2,3};
+
+		tinygltf::Model model;
+		std::string error, warn;
+		tinygltf::TinyGLTF loader;
+		loader.LoadASCIIFromFile(&model,&error,&warn,"Assets/Box/Box.gtlf");
 
 		gl::Initializer::Initialize();
 		unsigned width = 640;

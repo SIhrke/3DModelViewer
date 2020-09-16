@@ -4,6 +4,7 @@
 cmake_minimum_required (VERSION 3.8)
 configure_file(fragmentShader.frag ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 configure_file(vertexShader.vert ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+file(COPY ../Assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Add source to this project's executable.
 add_executable (3DModelViewer "main.cpp" )

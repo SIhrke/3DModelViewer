@@ -41,16 +41,20 @@ int main()
 		auto eyePosition = glm::vec3(3.0f, 3.0f, 3.0f);
 		auto lookatMat=glm::lookAt(eyePosition, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		auto perspectiveMat=glm::perspectiveFov(45.0f, static_cast<float>(width), static_cast<float>(height), 0.1f, 100.0f);
-		auto mvp = perspectiveMat * lookatMat;
-		shader.UseForUniform(mvp,"MVP");
-		glViewport(0, 0, width, height);
 		
+		glViewport(0, 0, width, height);
+		float rotation = 0.0;
 		window.Run([&]()
 			{
+				auto transformation = glm::rotate(rotation,0.0f,1.0f,0.0f);
+				auto mvp = perspectiveMat * lookatMat * transformation;
+				shader.UseForUniform(mvp, "MVP");
 				glClear(GL_COLOR_BUFFER_BIT);
 				shader.Activate();
 				indexBuffer.Activate();
 				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,(void*)0);
+
+				rotation += 1.0;
 			});
 	}
 	catch (const std::exception& ex)

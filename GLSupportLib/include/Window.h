@@ -5,6 +5,11 @@ struct GLFWwindow;
 
 namespace gl 
 {
+	struct Size 
+	{
+		int width; 
+		int height;
+	};
 	class Window 
 	{
 	public:
@@ -12,6 +17,7 @@ namespace gl
 		~Window();
 		void Activate();
 		void Run(const std::function<void()>& renderFunction);
+		Size GetSize() const;
 	private:
 		static bool glLoaded;
 		GLFWwindow* window=nullptr;

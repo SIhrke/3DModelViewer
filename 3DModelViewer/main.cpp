@@ -39,37 +39,76 @@ int main()
 		for (int i = 0; i < vertices_flat.size(); i += 3)
 		{
 			vertices.push_back(glm::vec3(vertices_flat[i], vertices_flat[i + 1], vertices_flat[i + 2]));
+		}
+		for (int i = 0; i < normals_flat.size(); i += 3)
+		{
 			normals.push_back(glm::vec3(normals_flat[i], normals_flat[i + 1], normals_flat[i + 2]));
 		}
+
+		std::vector<glm::vec3> averagedNormals(vertices.size());
+		for (int i = 0,j=0; i < indices.size(); i += 3,j++)
+		{
+			averagedNormals[indices[i]] += normals[j];
+			averagedNormals[indices[i+1]] += normals[j];
+			averagedNormals[indices[i+2]] += normals[j];
+		}
+		for (auto& normal : averagedNormals)
+		{
+			normal = glm::normalize(normal);
+		}
 		
+		glm::vec3 center;
+		float maxX = 0;
+		float maxY = 0;
+		float maxZ = 0;
+		for (auto& vertex : vertices)
+		{
+			if (vertex.x > maxX)
+				maxX = vertex.x;
+			if (vertex.y > maxY)
+				maxY = vertex.y;
+			if (vertex.z > maxZ)
+				maxZ = vertex.z;
+			center += vertex;
+		}
+		center /= vertices.size();
 
 		gl::Initializer::Initialize();
-		unsigned width = 640;
-		unsigned height = 480;
-		gl::Window window("window", width, height);
+		
+		gl::Window window("window", 640, 480);
 		window.Activate();
 		gl::Buffer buffer(vertices,gl::AccessFrequency::STATIC,gl::AccessType::DRAW);
-		gl::Buffer normalBuffer(normals, gl::AccessFrequency::STATIC, gl::AccessType::DRAW);
+		gl::Buffer normalBuffer(averagedNormals, gl::AccessFrequency::STATIC, gl::AccessType::DRAW);
 
 		gl::Buffer indexBuffer(indices, gl::AccessFrequency::STATIC, gl::AccessType::DRAW,gl::BufferType::INDEX);
 
 
 		gl::ShaderProgram shader(std::filesystem::path("vertexShader.vert"), std::filesystem::path("fragmentShader.frag"));
-		//shader.UseBufferForVertexAttribute(normalBuffer, "normalValue");
+		shader.UseBufferForVertexAttribute(normalBuffer, "normal");
 
 		shader.UseBufferForVertexAttribute(buffer, "vertex");
-		auto eyePosition = glm::vec3(40.0f, 3.0f, 40.0f);
-		auto lookatMat=glm::lookAt(eyePosition, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		auto perspectiveMat=glm::perspectiveFov(45.0f, static_cast<float>(width), static_cast<float>(height), 0.1f, 100.0f);
 		
-		glViewport(0, 0, width, height);
+		
 		float rotation = 0.0;
+		glEnable(GL_DEPTH_TEST);  
 		window.Run([&]()
 			{
+				glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+				auto windowSize = window.GetSize();
+				glViewport(0, 0, windowSize.width, windowSize.height);
+
+				auto eyePosition = glm::vec3(maxX * 2, maxY * 2, maxZ * 2);
+				auto lookatMat = glm::lookAt(eyePosition, center, glm::vec3(0.0f, 0.0f, 1.0f));
+				auto perspectiveMat = glm::perspectiveFov(45.0f, static_cast<float>(windowSize.width), static_cast<float>(windowSize.height), 0.1f, 100.0f);
+
+
 				auto transformation = glm::rotate(rotation,0.0f,0.0f,1.0f);
 				auto mvp = perspectiveMat * lookatMat * transformation;
+				auto mvpNormal = glm::transpose(glm::inverse(mvp));
 				shader.UseForUniform(mvp, "MVP");
-				glClear(GL_COLOR_BUFFER_BIT);
+				shader.UseForUniform(mvpNormal, "mvpNormal");
+
 				shader.Activate();
 				indexBuffer.Activate();
 				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,(void*)0);

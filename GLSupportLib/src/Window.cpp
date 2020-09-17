@@ -50,6 +50,12 @@ namespace gl
 		}
 
 	}
+	Size Window::GetSize() const
+	{
+		Size size;
+		glfwGetFramebufferSize(window, &size.width, &size.height);
+		return size;
+	}
 
 	void Window::Run(const std::function<void()>& renderFunction)
 	{

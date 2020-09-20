@@ -28,6 +28,13 @@ namespace gl
 
 		}		
 		void UseForUniform(const glm::mat4x4& mat, const std::string& variableName);
+		void UseForUniform(const glm::mat3x3& mat, const std::string& variableName);
+		void UseForUniform(const glm::vec4& vec, const std::string& variableName);
+		void UseForUniform(const glm::vec3& vec, const std::string& variableName);
+		void UseForUniform(const glm::vec2& vec, const std::string& variableName);
+		void UseForUniform(int value, const std::string& variableName);
+		void UseForUniform(float value, const std::string& variableName);
+
 		void Activate();
 	private:
 		void SetupShaders(const std::string& vertexShaderText, const std::string& fragmentShaderText);

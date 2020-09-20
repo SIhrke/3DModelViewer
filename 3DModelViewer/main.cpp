@@ -90,6 +90,7 @@ int main()
 		
 		
 		float rotation = 0.0;
+		float rotationLight = 0.0;
 		glEnable(GL_DEPTH_TEST);  
 		window.Run([&]()
 			{
@@ -106,14 +107,19 @@ int main()
 				auto transformation = glm::rotate(rotation,0.0f,0.0f,1.0f);
 				auto mvp = perspectiveMat * lookatMat * transformation;
 				auto mvpNormal = glm::transpose(glm::inverse(mvp));
+
+				glm::vec4 lightDirection(1, 1, 1, 1);
+				lightDirection = glm::rotate(rotationLight, 0.0f, 0.0f, 1.0f) * lightDirection;
 				shader.UseForUniform(mvp, "MVP");
 				shader.UseForUniform(mvpNormal, "mvpNormal");
+				shader.UseForUniform(lightDirection,"lightDirection");
 
 				shader.Activate();
 				indexBuffer.Activate();
 				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT,(void*)0);
 
-				rotation += 1.0;
+				//rotation += 1.0;
+				rotationLight -= 2.0;
 			});
 	}
 	catch (const std::exception& ex)

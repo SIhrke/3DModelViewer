@@ -1,6 +1,7 @@
 #version 140
 uniform mat4 MVP;
 uniform mat4 mvpNormal;
+uniform vec4 lightDirection;
 
 in vec3 vertex;
 in vec3 normal;
@@ -9,10 +10,10 @@ void main()
 {
    gl_Position = MVP*vec4(vertex, 1.0);
 
-    vec3 light=vec3(0,0,1);
     float k=1.0;
-    vec3 diffuseColor=vec3(1.0,0.0,0.0);
-    diffuseColor*=dot(light,normal);
+    vec3 diffuseColor=vec3(0.4,0.4,0.4);
+    vec3 ambientColor=vec3(0.2,0.2,0.2);
+    diffuseColor*=dot(lightDirection.xyz,normal);
 
-   color=diffuseColor*dot(diffuseColor,diffuseColor);
+   color=ambientColor+diffuseColor*dot(diffuseColor,diffuseColor);
 }

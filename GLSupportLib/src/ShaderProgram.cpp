@@ -57,7 +57,45 @@ namespace gl
 		glUniformMatrix4fv(varLocation, 1, GL_FALSE, glm::value_ptr(mat));
 	}
 
+	void ShaderProgram::UseForUniform(const glm::mat3x3& mat, const std::string& variableName)
+	{
+		Activate();
+		auto varLocation = glGetUniformLocation(shaderProgram, variableName.c_str());
+		glUniformMatrix3fv(varLocation, 1, GL_FALSE, glm::value_ptr(mat));
+	}
 
+
+	void ShaderProgram::UseForUniform(const glm::vec4& vec, const std::string& variableName)
+	{
+		Activate();
+		auto varLocation = glGetUniformLocation(shaderProgram, variableName.c_str());
+		glUniform4fv(varLocation, 1, glm::value_ptr(vec));
+	}
+
+	void ShaderProgram::UseForUniform(const glm::vec3& vec, const std::string& variableName) 
+	{
+		Activate();
+		auto varLocation = glGetUniformLocation(shaderProgram, variableName.c_str());
+		glUniform3fv(varLocation, 1, glm::value_ptr(vec));
+	}
+	void ShaderProgram::UseForUniform(const glm::vec2& vec, const std::string& variableName) 
+	{
+		Activate();
+		auto varLocation = glGetUniformLocation(shaderProgram, variableName.c_str());
+		glUniform2fv(varLocation, 1, glm::value_ptr(vec));
+	}
+	void ShaderProgram::UseForUniform(int value, const std::string& variableName)
+	{
+		Activate();
+		auto varLocation = glGetUniformLocation(shaderProgram, variableName.c_str());
+		glUniform1i(varLocation, value);
+	}
+	void ShaderProgram::UseForUniform(float value, const std::string& variableName)
+	{
+		Activate();
+		auto varLocation = glGetUniformLocation(shaderProgram, variableName.c_str());
+		glUniform1f(varLocation, value);
+	}
 
 	void ShaderProgram::Activate() 
 	{

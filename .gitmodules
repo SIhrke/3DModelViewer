@@ -10,3 +10,6 @@
 [submodule "External/stl_reader"]
 	path = External/stl_reader
 	url = https://github.com/sreiter/stl_reader.git
+[submodule "External/glTF-SDK"]
+	path = External/glTF-SDK
+	url = https://github.com/microsoft/glTF-SDK.git

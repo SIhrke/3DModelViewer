@@ -16,9 +16,6 @@ int main()
 		std::vector<glm::vec3> vertices;
 		std::vector<glm::vec3> normals;
 
-		
-
-
 		std::vector<float> vertices_flat;
 		std::vector<float> normals_flat;
 		std::vector<unsigned int> indices;
@@ -77,7 +74,7 @@ int main()
 		
 		gl::Window window("window", 640, 480);
 		window.Activate();
-		gl::Buffer buffer(vertices,gl::AccessFrequency::STATIC,gl::AccessType::DRAW);
+		gl::Buffer vertexBuffer(vertices,gl::AccessFrequency::STATIC,gl::AccessType::DRAW);
 		gl::Buffer normalBuffer(averagedNormals, gl::AccessFrequency::STATIC, gl::AccessType::DRAW);
 
 		gl::Buffer indexBuffer(indices, gl::AccessFrequency::STATIC, gl::AccessType::DRAW,gl::BufferType::INDEX);
@@ -86,7 +83,7 @@ int main()
 		gl::ShaderProgram shader(std::filesystem::path("vertexShader.vert"), std::filesystem::path("fragmentShader.frag"));
 		shader.UseBufferForVertexAttribute(normalBuffer, "normal");
 
-		shader.UseBufferForVertexAttribute(buffer, "vertex");
+		shader.UseBufferForVertexAttribute(vertexBuffer, "vertex");
 		
 		
 		float rotation = 0.0;

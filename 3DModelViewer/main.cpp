@@ -88,6 +88,18 @@ int main()
 		
 		float rotation = 0.0;
 		float rotationLight = 0.0;
+		int windowX = 0;
+		int windowY=0;
+		window.RegisterMouseMove(
+			[&](int x, int y, gl::MouseMode mode)
+			{
+				if (mode == gl::MouseMode::Pressed)
+				{
+					int diffX = windowX - x;
+					rotation = diffX;
+				}
+			}
+		);
 		glEnable(GL_DEPTH_TEST);  
 		window.Run([&]()
 			{

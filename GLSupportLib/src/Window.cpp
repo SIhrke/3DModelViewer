@@ -67,5 +67,28 @@ namespace gl
 			glfwPollEvents();
 		}
 	}
+	std::function<void(int, int, MouseMode)> globalMouseMoveFunction;
+	void MouseMoveFunction(GLFWwindow* window, double x, double y)
+	{
+		MouseMode mode;
+		switch (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
+		{
+		case GLFW_PRESS:
+			mode = Pressed;
+			break;
+		case GLFW_RELEASE:
+			mode = Released;
+			break;
+		}
+		globalMouseMoveFunction(x, y, mode);
+	}
+
+	void Window::RegisterMouseMove(const std::function<void(int, int, MouseMode)>& mouseMoveFunction) 
+	{
+		globalMouseMoveFunction = mouseMoveFunction;
+		glfwSetCursorPosCallback(window, MouseMoveFunction);
+	}
+	
+
 
 }

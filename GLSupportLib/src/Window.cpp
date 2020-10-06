@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <sstream>
+#include <iostream>
 
 namespace gl 
 {
@@ -17,7 +18,8 @@ namespace gl
 	{
 		std::stringstream ss;
 		ss<< "OpenGL Error type: " << type << " severity: " << severity << " message: " << message << std::endl;
-		throw std::exception(ss.str().c_str());
+		std::cout << ss.str();
+		//throw std::exception(ss.str().c_str());
 	}
 
 	bool Window::glLoaded = false;

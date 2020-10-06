@@ -1,11 +1,26 @@
 #version 140
+uniform vec3 eyePosition;
+uniform vec4 lightDirection;
 
+in vec3 fragVertex;
 in vec3 fragNormal;
-in vec3 color;
+
 out vec4 fragmentColor;
 
 
 void main()
 {
+
+    vec3 diffuseColor=vec3(0.4,0.4,0.4);
+    vec3 ambientColor=vec3(0.5,0.2,0.2);
+    diffuseColor*=max(dot(lightDirection.xyz, fragNormal),0.0);
+    float ambientMix=0.3;
+    float diffuseMix=0.4;
+    float specularMix=0.3;
+
+    vec3 eyeDirection=normalize(fragVertex-eyePosition);
+    vec3 H=normalize(eyeDirection+lightDirection.xyz);
+    
+    vec3 color=ambientMix*ambientColor+diffuseMix*diffuseColor+specularMix*pow(max(dot(H,fragNormal),0.0),30.0);
     fragmentColor = vec4(color, 1.0);
 }

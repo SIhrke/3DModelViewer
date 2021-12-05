@@ -43,7 +43,7 @@ int main()
 {
 	try 
 	{
-		auto modelPath = std::filesystem::path("./Assets/Teapot/utahteapot.stl");
+		auto modelPath = std::filesystem::path("./Assets/Dragon/stanford_dragon.stl");
 		auto modelOptional = viewer::LoadSTLModel(modelPath);
 		if (!modelOptional)
 			return -1;

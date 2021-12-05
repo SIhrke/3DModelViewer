@@ -11,9 +11,10 @@ out vec4 fragmentColor;
 void main()
 {
 
-    vec3 diffuseColor=vec3(0.4,0.4,0.4);
-    vec3 ambientColor=vec3(0.5,0.2,0.2);
-    diffuseColor*=max(dot(lightDirection.xyz, fragNormal),0.0);
+    vec3 diffuseColor=vec3(1.0,1.0,1.0);
+    vec3 ambientColor=vec3(0.8,0.8,0.8);
+    diffuseColor*=(1.0/3.0*max(dot(lightDirection.xyz, fragNormal),0.0)+1.0/3.0*max(dot(vec3(0,1,1), fragNormal),0.0)+1.0/3.0*max(dot(vec3(0,-1,-1), fragNormal),0.0));
+
     float ambientMix=0.3;
     float diffuseMix=0.4;
     float specularMix=0.3;

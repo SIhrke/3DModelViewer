@@ -19,11 +19,16 @@ namespace gl
 		COPY
 	};
 
-	enum BufferType
+	enum class BufferType
 	{
 		DATA=GL_ARRAY_BUFFER,
 		INDEX=GL_ELEMENT_ARRAY_BUFFER
 	};
+
+	unsigned GenerateGLEnumStatic(AccessType type);
+	unsigned GenerateGLEnumDynamic(AccessType type);
+	unsigned GenerateGLEnumStream(AccessType type);
+	unsigned GenerateGLEnum(AccessFrequency frequency, AccessType type);
 
 	template <typename VecType>
 	class Buffer 
@@ -31,70 +36,8 @@ namespace gl
 		using BufferData = std::vector<VecType>;
 
 	public:
-		unsigned GenerateGLEnumStatic(AccessType type)
-		{
-			unsigned glEnumValue = GL_STATIC_DRAW;
-			switch (type)
-			{
-			case AccessType::READ:
-				return GL_STATIC_READ;
-			case AccessType::COPY:
-				return GL_STATIC_COPY;
-			case AccessType::DRAW:
-				return GL_STATIC_DRAW;
-			}
-			return glEnumValue;
-		}
 
-		unsigned GenerateGLEnumDynamic(AccessType type)
-		{
-			unsigned glEnumValue = GL_DYNAMIC_DRAW;
-			switch (type)
-			{
-			case AccessType::READ:
-				return GL_DYNAMIC_READ;
-			case AccessType::COPY:
-				return GL_DYNAMIC_COPY;
-			case AccessType::DRAW:
-				return GL_DYNAMIC_DRAW;
-			}
-			return glEnumValue;
-		}
-
-		unsigned GenerateGLEnumStream(AccessType type)
-		{
-			unsigned glEnumValue = GL_STREAM_DRAW;
-			switch (type)
-			{
-			case AccessType::READ:
-				return GL_STREAM_READ;
-			case AccessType::COPY:
-				return GL_STREAM_COPY;
-			case AccessType::DRAW:
-				return GL_STREAM_DRAW;
-			}
-			return glEnumValue;
-		}
-
-
-		unsigned GenerateGLEnum(AccessFrequency frequency, AccessType type)
-		{
-			unsigned glEnumValue = GL_STATIC_DRAW;
-			switch (frequency)
-			{
-			case AccessFrequency::STATIC:
-				return GenerateGLEnumStatic(type);
-			case AccessFrequency::DYNAMIC:
-				return GenerateGLEnumDynamic(type);
-
-			case AccessFrequency::STREAM:
-				return GenerateGLEnumStream(type);
-			}
-			return glEnumValue;
-		}
-
-		Buffer::Buffer(BufferData& data, AccessFrequency frequency, AccessType type, BufferType bufferType = BufferType::DATA) :
-			data(data),
+		Buffer(const BufferData& data, AccessFrequency frequency, AccessType type, BufferType bufferType = BufferType::DATA) :
 			bufferType(bufferType)
 		{
 	
@@ -103,24 +46,28 @@ namespace gl
 			glBufferData(bufferType, sizeof(VecType) * data.size(), data.data(), GenerateGLEnum(frequency, type));
 		}
 
-		Buffer::~Buffer()
+		Buffer(const Buffer& rhs) = delete;
+		Buffer(Buffer&& rhs) = delete;
+		Buffer& operator=(const Buffer& rhs) = delete;
+		Buffer& operator=(Buffer&& rhs) = delete;
+
+		~Buffer()
 		{
 			glDeleteBuffers(1, &buffer);
 		}
 
 
-		unsigned Buffer::ElementSizeInBytes() const
+		unsigned ElementSizeInBytes() const
 		{
 			return sizeof(VecType);
 		}
 
-		void Buffer::Activate() const
+		void Activate() const
 		{
 			glBindBuffer(bufferType, buffer);
 		}
 	private:
 		unsigned buffer;
-		BufferData data;
 		BufferType bufferType=GL_ARRAY_BUFFER;
 	};
 

@@ -11,6 +11,10 @@ namespace gl
 	public:
 		ShaderProgram(const std::filesystem::path& vertexShader, const std::filesystem::path& fragmentShader);
 		ShaderProgram(const std::string& vertexShader, const std::string& fragmentShader);
+		ShaderProgram(const ShaderProgram& rhs) = delete;
+		ShaderProgram(ShaderProgram&& rhs) = delete;
+		ShaderProgram& operator=(const ShaderProgram& rhs) = delete;
+		ShaderProgram& operator=(ShaderProgram&& rhs) = delete;
 		~ShaderProgram();
 
 		template<typename VecType>
@@ -19,10 +23,8 @@ namespace gl
 			Activate();
 			buffer.Activate();
 			auto varLocation = glGetAttribLocation(shaderProgram, variableName.c_str());
-			;
+			
 			glEnableVertexAttribArray(varLocation);
-
-			//TODO: reflection must be handled here
 			glVertexAttribPointer(varLocation, OpenGLTraits<VecType>::size, OpenGLTraits<VecType>::glType, GL_FALSE,
 				buffer.ElementSizeInBytes(), (void*)0);
 

@@ -11,9 +11,7 @@ namespace gl
 		std::ifstream vertexStream(vertexShader.string());
 		std::ifstream fragmentStream(fragmentShader.string());
 
-		std::string vertexText((std::istreambuf_iterator<char>(vertexStream)),std::istreambuf_iterator<char>());
-		std::string fragmentText((std::istreambuf_iterator<char>(fragmentStream)), std::istreambuf_iterator<char>());
-		SetupShaders(vertexText, fragmentText);
+		SetupShaders({ std::istreambuf_iterator<char>(vertexStream) ,{} }, { std::istreambuf_iterator<char>(fragmentStream) , {} });
 
 	}
 

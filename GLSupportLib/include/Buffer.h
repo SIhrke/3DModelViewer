@@ -19,7 +19,7 @@ namespace gl
 		COPY
 	};
 
-	enum class BufferType
+	enum BufferType
 	{
 		DATA=GL_ARRAY_BUFFER,
 		INDEX=GL_ELEMENT_ARRAY_BUFFER
